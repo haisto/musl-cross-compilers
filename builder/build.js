@@ -102,44 +102,30 @@ const data = {
   },
 };
 
-const retries = 5;
-for (let i = 0; i < retries; i++) {
-  let artifactsIf, releasesIf, continueOnError;
-  if (i == 0) {
-    artifactsIf = `\${{ success() }}`;
-    releasesIf = `\${{ github.event.inputs.do_release == 'yes' }}`;
-  } else {
-    artifactsIf = `\${{ steps.upload-artifacts-${i - 1}.outcome == 'failure' }}`;
-    releasesIf = `\${{ github.event.inputs.do_release == 'yes' && steps.upload-releases-${i - 1}.outcome == 'failure' }}`;
-  }
-  continueOnError = i == retries - 1;
-  const uploadSteps = [
-    {
-      id: `upload-artifacts-${i}`,
-      name: `Upload artifacts ${i}`,
-      if: artifactsIf,
-      "continue-on-error": continueOnError,
-      uses: "actions/upload-artifact@v7",
-       with: {
-         path: "output-${{ matrix.target }}-${{ steps.package.outputs.source_escaped }}.tar.gz",
-         name: "${{ matrix.target }}-${{ steps.package.outputs.source_escaped }}",
-       },
+const uploadSteps = [
+  {
+    id: `upload-artifacts`,
+    name: `Upload artifacts`,
+    if: `\${{ success() }}`,
+    uses: "actions/upload-artifact@v4",
+    with: {
+      path: "output-${{ matrix.target }}-${{ steps.package.outputs.source_escaped }}.tar.gz",
+      name: "${{ matrix.target }}-${{ steps.package.outputs.source_escaped }}",
     },
-    {
-      id: `upload-releases-${i}`,
-      name: `Upload to releases ${i}`,
-      uses: "softprops/action-gh-release@v2",
-      if: releasesIf,
-      "continue-on-error": continueOnError,
-      with: {
-        files: "output-${{ matrix.target }}-${{ steps.package.outputs.source_escaped }}.tar.gz",
-        tag_name: "${{ github.event.inputs.release }}",
-        token: "${{ secrets.TOKEN }}",
-      },
+  },
+  {
+    id: `upload-releases`,
+    name: `Upload to releases`,
+    uses: "softprops/action-gh-release@v2",
+    if: `\${{ github.event.inputs.do_release == 'yes' }}`,
+    with: {
+      files: "output-${{ matrix.target }}-${{ steps.package.outputs.source_escaped }}.tar.gz",
+      tag_name: "${{ github.event.inputs.release }}",
+      token: "${{ secrets.TOKEN }}",
     },
-  ];
+  },
+];
 
-  data.jobs.compile.steps.push(...uploadSteps);
-}
+data.jobs.compile.steps.push(...uploadSteps);
 
 console.log(yaml.dump(data));
