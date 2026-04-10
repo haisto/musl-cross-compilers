@@ -29,6 +29,9 @@ const data = {
       },
     },
   },
+  permissions: {
+    contents: "write",
+  },
   jobs: {
     prepare: {
       "runs-on": "ubuntu-latest",
@@ -45,7 +48,7 @@ const data = {
             tag_name: "${{ github.event.inputs.release }}",
             draft: false,
             prerelease: false,
-            token: "${{ secrets.TOKEN }}",
+            token: "${{ secrets.GITHUB_TOKEN }}",
           }
         },
       ],
@@ -91,7 +94,7 @@ const data = {
           name: "Package ${{ matrix.target }}",
           id: "package",
           run: [
-              "tar -czvf ../output-${{ matrix.target }}.tar.gz output/", 
+              "tar -czvf ../output-${{ matrix.target }}.tar.gz output/",
               "SOURCE_ESCAPED=${REPO%%/*}_${REPO##*/}",
               "echo \"source_escaped=$SOURCE_ESCAPED\" >> $GITHUB_OUTPUT",
               "mv ../output-${{ matrix.target }}.tar.gz ../output-${{ matrix.target }}-$SOURCE_ESCAPED.tar.gz"
@@ -122,7 +125,7 @@ const uploadSteps = [
     with: {
       files: "output-${{ matrix.target }}-${{ steps.package.outputs.source_escaped }}.tar.gz",
       tag_name: "${{ github.event.inputs.release }}",
-      token: "${{ secrets.TOKEN }}",
+      token: "${{ secrets.GITHUB_TOKEN }}",
     },
   },
 ];

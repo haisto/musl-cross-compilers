@@ -20,6 +20,7 @@ const tags = {
       "/",
       "_"
     )}.tar.gz`;
+    console.log(`Downloading ${url}`);
 
     let cachedPath;
     if (build) {
@@ -71,6 +72,7 @@ const tags = {
       cachedPath = destDir;
     } else {
       cachedPath = tc.find("mcm", `${target}-${variant}.tar.gz`);
+      console.log('find cache', `${target}-${variant}.tar.gz`, cachedPath)
     }
     if (cachedPath) {
       console.log(`Found installation at ${cachedPath}`);
