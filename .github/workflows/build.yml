@@ -23,7 +23,7 @@ jobs:
           tag_name: '${{ github.event.inputs.release }}'
           draft: false
           prerelease: false
-          token: '${{ secrets.TOKEN }}'
+          token: '${{ secrets.GITHUB_TOKEN }}'
   compile:
     needs: prepare
     runs-on: ubuntu-latest
