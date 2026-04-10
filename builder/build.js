@@ -38,18 +38,15 @@ const data = {
       steps: [
         {
           name: "Create release",
-          uses: "actions/create-release@v1",
+          uses: "softprops/action-gh-release@v2",
           id: "create_release",
           if: "${{ github.event.inputs.do_release == 'yes' }}",
           with: {
             tag_name: "${{ github.event.inputs.release }}",
-            release_name: "${{ github.event.inputs.release }}",
             draft: false,
             prerelease: false,
-          },
-          env: {
-            GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
-          },
+            token: "${{ secrets.GITHUB_TOKEN }}",
+          }
         },
       ],
     },
@@ -81,8 +78,11 @@ const data = {
         {
             name: "Build ${{ matrix.target }} zlib",
             run: [
-                "wget https://zlib.net/zlib-1.3.2.tar.gz", "tar -xzf zlib-1.3.2.tar.gz", "cd zlib-1.3.2",
-                "./configure --prefix=../output --static", "make install", "cd ..",
+                "git clone --branch master --single-branch https://github.com/madler/zlib.git",
+                "cd zlib",
+                "./configure --prefix=../output --static",
+                "make install",
+                "cd ..",
                 "ls output/lib"
             ].join("\n"),
             "working-directory": "mcm",
