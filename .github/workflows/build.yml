@@ -64,8 +64,7 @@ jobs:
 
           echo "name=source_escaped=${REPO%%/*}_${REPO##*/}" >> $GITHUB_OUTPUT
 
-          mv ../output-${{ matrix.target }}.tar.gz ../output-${{ matrix.target
-          }}-${{ steps.package.outputs.source_escaped }}.tar.gz
+          mv ../output-${{ matrix.target }}.tar.gz ../output-${{ matrix.target}}-${{ steps.package.outputs.source_escaped }}.tar.gz
         working-directory: mcm
       - id: upload-artifacts
         name: Upload artifacts
