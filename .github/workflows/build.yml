@@ -42,6 +42,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: 'Clone ${{ matrix.repo }}'
         run: 'git clone https://github.com/${{ matrix.repo }} mcm'
+      - name: 'Build ${{ matrix.target }}'
+        run: |-
+          make -j4
+          make install
+          ls output
+        working-directory: mcm
       - name: 'Build ${{ matrix.target }} zlib'
         run: >-
           git clone --branch master --single-branch
@@ -73,8 +79,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: >-
-            output-${{ matrix.target }}-${{ steps.package.outputs.source_escaped
-            }}.tar.gz
+            output-${{ matrix.target }}-${{ steps.package.outputs.source_escaped}}.tar.gz
           name: '${{ matrix.target }}-${{ steps.package.outputs.source_escaped }}'
       - id: upload-releases
         name: Upload to releases
@@ -82,8 +87,7 @@ jobs:
         if: '${{ github.event.inputs.do_release == ''yes'' }}'
         with:
           files: >-
-            output-${{ matrix.target }}-${{ steps.package.outputs.source_escaped
-            }}.tar.gz
+            output-${{ matrix.target }}-${{ steps.package.outputs.source_escaped}}.tar.gz
           tag_name: '${{ github.event.inputs.release }}'
           token: '${{ secrets.TOKEN }}'
 
