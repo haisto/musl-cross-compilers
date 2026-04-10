@@ -91,9 +91,10 @@ const data = {
           name: "Package ${{ matrix.target }}",
           id: "package",
           run: [
-              "tar -czvf ../output-${{ matrix.target }}.tar.gz output/",
-              "echo \"name=source_escaped=${REPO%%/*}_${REPO##*/}\" >> $GITHUB_OUTPUT",
-              "mv ../output-${{ matrix.target }}.tar.gz ../output-${{ matrix.target }}-${{ steps.package.outputs.source_escaped }}.tar.gz"
+              "tar -czvf ../output-${{ matrix.target }}.tar.gz output/", 
+              "SOURCE_ESCAPED=${REPO%%/*}_${REPO##*/}",
+              "echo \"name=source_escaped=$SOURCE_ESCAPED\" >> $GITHUB_OUTPUT",
+              "mv ../output-${{ matrix.target }}.tar.gz ../output-${{ matrix.target }}-$SOURCE_ESCAPED.tar.gz"
           ].join("\n"),
           "working-directory": "mcm",
         },
