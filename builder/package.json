@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "node build.js"
+    "build": "node build.js > ../.github/workflows/build.yml"
   },
   "dependencies": {
     "argparse": "1.0.10",
