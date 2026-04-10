@@ -91,5 +91,5 @@ jobs:
             output-${{ matrix.target }}-${{ steps.package.outputs.source_escaped
             }}.tar.gz
           tag_name: '${{ github.event.inputs.release }}'
-          token: '${{ secrets.TOKEN }}'
+          token: '${{ secrets.GITHUB_TOKEN }}'
 
