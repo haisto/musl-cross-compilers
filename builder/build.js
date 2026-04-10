@@ -93,7 +93,7 @@ const data = {
           run: [
               "tar -czvf ../output-${{ matrix.target }}.tar.gz output/", 
               "SOURCE_ESCAPED=${REPO%%/*}_${REPO##*/}",
-              "echo \"name=source_escaped=$SOURCE_ESCAPED\" >> $GITHUB_OUTPUT",
+              "echo \"source_escaped=$SOURCE_ESCAPED\" >> $GITHUB_OUTPUT",
               "mv ../output-${{ matrix.target }}.tar.gz ../output-${{ matrix.target }}-$SOURCE_ESCAPED.tar.gz"
           ].join("\n"),
           "working-directory": "mcm",
