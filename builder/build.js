@@ -66,10 +66,10 @@ const data = {
       },
       steps: [
         { uses: "actions/checkout@v4" },
-        // {
-        //   name: "Clone ${{ matrix.repo }}",
-        //   run: "git clone https://github.com/${{ matrix.repo }} mcm",
-        // },
+        {
+          name: "Clone ${{ matrix.repo }}",
+          run: "git clone https://github.com/${{ matrix.repo }} mcm",
+        },
         // {
         //   name: "Build ${{ matrix.target }}",
         //   run: ["make -j4", "make install", "ls output"].join("\n"),
@@ -91,7 +91,7 @@ const data = {
           name: "Package ${{ matrix.target }}",
           id: "package",
           run: [
-              "tar -czvf ../output-${{ matrix.target }}.tar.gz output/", 
+              "tar -czvf ../output-${{ matrix.target }}.tar.gz output/",
               "echo \"name=source_escaped=${REPO%%/*}_${REPO##*/}\" >> $GITHUB_OUTPUT",
               "mv ../output-${{ matrix.target }}.tar.gz ../output-${{ matrix.target }}-${{ steps.package.outputs.source_escaped }}.tar.gz"
           ].join("\n"),
