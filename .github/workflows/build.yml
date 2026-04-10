@@ -9,6 +9,10 @@ name: Build cross compilers
       release:
         description: Release tag and name
         required: true
+
+permissions:
+  contents: write
+
 jobs:
   prepare:
     runs-on: ubuntu-latest
