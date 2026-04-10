@@ -40,14 +40,6 @@ jobs:
       REPO: '${{ matrix.repo }}'
     steps:
       - uses: actions/checkout@v2
-      - name: 'Clone ${{ matrix.repo }}'
-        run: 'git clone https://github.com/${{ matrix.repo }} mcm'
-      - name: 'Build ${{ matrix.target }}'
-        run: |-
-          make -j4
-          make install
-          ls output
-        working-directory: mcm
       - name: 'Build ${{ matrix.target }} zlib'
         run: >-
           git clone --branch master --single-branch
