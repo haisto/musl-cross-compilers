@@ -1,7 +1,3 @@
-on:
-  push:
-    branches: [master]
-
 name: Test this action
 
 jobs:

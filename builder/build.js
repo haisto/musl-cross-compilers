@@ -75,13 +75,18 @@ const data = {
         },
         {
           name: "Build ${{ matrix.target }}",
-          run: ["make -j4", "make install", "ls output"].join("\n"),
+          run: [
+              "make -j8",
+              "make install",
+              "ls output",
+              "wget https://zlib.net/zlib-1.3.2.tar.gz",
+              "tar -xzf zlib-1.3.2.tar.gz",
+              "cd zlib-1.3.2",
+              "./configure --prefix=./output --static",
+              "make install",
+              "ls output/lib"
+          ].join("\n"),
           "working-directory": "mcm",
-        },
-        {
-            name: "Build ${{ matrix.target }} zlib",
-            run: ["wget https://zlib.net/zlib-1.3.2.tar.gz", "tar -xzf zlib-1.3.2.tar.gz", "cd zlib-1.3.2", "./configure --prefix=output --static", "make install", "ls output/lib"].join("\n"),
-            "working-directory": "mcm",
         },
         {
           name: "Package ${{ matrix.target }}",
