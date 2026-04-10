@@ -45,7 +45,7 @@ const data = {
             tag_name: "${{ github.event.inputs.release }}",
             draft: false,
             prerelease: false,
-            token: "${{ secrets.GITHUB_TOKEN }}",
+            token: "${{ secrets.TOKEN }}",
           }
         },
       ],
