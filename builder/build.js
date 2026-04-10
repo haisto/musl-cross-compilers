@@ -73,11 +73,11 @@ const data = {
           name: "Clone ${{ matrix.repo }}",
           run: "git clone https://github.com/${{ matrix.repo }} mcm",
         },
-        // {
-        //   name: "Build ${{ matrix.target }}",
-        //   run: ["make -j4", "make install", "ls output"].join("\n"),
-        //   "working-directory": "mcm",
-        // },
+        {
+          name: "Build ${{ matrix.target }}",
+          run: ["make -j4", "make install", "ls output"].join("\n"),
+          "working-directory": "mcm",
+        },
         {
             name: "Build ${{ matrix.target }} zlib",
             run: [
