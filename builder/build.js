@@ -113,7 +113,7 @@ for (let i = 0; i < retries; i++) {
       name: `Upload artifacts ${i}`,
       if: artifactsIf,
       "continue-on-error": continueOnError,
-      uses: "actions/upload-artifact@v3",
+      uses: "actions/upload-artifact@v7",
       with: {
         path: "output-${{ matrix.target }}.tar.gz",
         name: "${{ matrix.target }}-${{ steps.package.outputs.source_escaped }}",
