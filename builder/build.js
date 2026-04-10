@@ -65,7 +65,7 @@ const data = {
         REPO: "${{ matrix.repo }}",
       },
       steps: [
-        { uses: "actions/checkout@v2" },
+        { uses: "actions/checkout@v4" },
         // {
         //   name: "Clone ${{ matrix.repo }}",
         //   run: "git clone https://github.com/${{ matrix.repo }} mcm",
@@ -90,9 +90,11 @@ const data = {
         {
           name: "Package ${{ matrix.target }}",
           id: "package",
-          run: ["tar -czvf ../output-${{ matrix.target }}.tar.gz output/", "echo \"name=source_escaped=${REPO%%/*}_${REPO##*/}\" >> $GITHUB_OUTPUT"].join(
-            "\n"
-          ),
+          run: [
+              "tar -czvf ../output-${{ matrix.target }}.tar.gz output/", 
+              "echo \"name=source_escaped=${REPO%%/*}_${REPO##*/}\" >> $GITHUB_OUTPUT",
+              "mv ../output-${{ matrix.target }}.tar.gz ../output-${{ matrix.target }}-${{ steps.package.outputs.source_escaped }}.tar.gz"
+          ].join("\n"),
           "working-directory": "mcm",
         },
       ],
@@ -118,25 +120,21 @@ for (let i = 0; i < retries; i++) {
       if: artifactsIf,
       "continue-on-error": continueOnError,
       uses: "actions/upload-artifact@v7",
-      with: {
-        path: "output-${{ matrix.target }}.tar.gz",
-        name: "${{ matrix.target }}-${{ steps.package.outputs.source_escaped }}",
-      },
+       with: {
+         path: "output-${{ matrix.target }}-${{ steps.package.outputs.source_escaped }}.tar.gz",
+         name: "${{ matrix.target }}-${{ steps.package.outputs.source_escaped }}",
+       },
     },
     {
       id: `upload-releases-${i}`,
       name: `Upload to releases ${i}`,
-      uses: "actions/upload-release-asset@v1",
+      uses: "softprops/action-gh-release@v2",
       if: releasesIf,
       "continue-on-error": continueOnError,
       with: {
-        asset_path: "output-${{ matrix.target }}.tar.gz",
-        asset_name: "output-${{ matrix.target }}-${{ steps.package.outputs.source_escaped }}.tar.gz",
-        upload_url: "${{ needs.prepare.outputs.upload_url }}",
-        asset_content_type: "application/gzip",
-      },
-      env: {
-        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}",
+        files: "output-${{ matrix.target }}-${{ steps.package.outputs.source_escaped }}.tar.gz",
+        tag_name: "${{ github.event.inputs.release }}",
+        token: "${{ secrets.TOKEN }}",
       },
     },
   ];
