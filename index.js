@@ -72,15 +72,15 @@ const tags = {
       }
       cachedPath = destDir;
     } else {
-      cachedPath = tc.find("mcm", `${target}-${escapedVariant}.tar.gz`);
-      console.log('find cache', `${target}-${escapedVariant}.tar.gz`, cachedPath)
+      cachedPath = tc.find("mcm", `${target}-${escapedVariant}`);
+      console.log('find cache', `${target}-${escapedVariant}`, cachedPath)
     }
     if (cachedPath) {
       console.log(`Found installation at ${cachedPath}`);
     } else {
       const toolchainPath = await tc.downloadTool(url);
       const toolchainExtractedFolder = await tc.extractTar(toolchainPath);
-      cachedPath = await tc.cacheDir(toolchainExtractedFolder, "mcm", `${target}-${escapedVariant}.tar.gz`);
+      cachedPath = await tc.cacheDir(toolchainExtractedFolder, "mcm", `${target}-${escapedVariant}`);
       console.log(`Installed at ${cachedPath}`);
     }
     cachedPath = path.join(cachedPath, "output", "bin");
