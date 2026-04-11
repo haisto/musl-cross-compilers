@@ -7,12 +7,11 @@ const exec = require("@actions/exec");
 const io = require("@actions/io");
 const path = require("path");
 
-const toolchainName = "musl-cross-make";
 const target = core.getInput("target", {required: true});
 const version = core.getInput("version", {required: true});
 const variant = core.getInput("variant", {required: true});
 const escapedVariant = variant.replace("/", "_");
-const cacheVersion = `${version}-${target}-${escapedVariant}`;
+const toolchainName = `musl-cross-make-${target}-${escapedVariant}`;
 
 if (!tempDirectory) {
     let baseLocation;
