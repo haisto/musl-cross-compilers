@@ -6,6 +6,7 @@ const path = require("path");
 
 const target = core.getInput("target", { required: true });
 const variant = core.getInput("variant", { required: true });
+const escapedVariant = variant.replace("/", "_");
 const build = core.getInput("build").toUpperCase() === "TRUE";
 const buildDir = path.join("/opt/", target, variant);
 
@@ -71,15 +72,15 @@ const tags = {
       }
       cachedPath = destDir;
     } else {
-      cachedPath = tc.find("mcm", `${target}-${variant}.tar.gz`);
-      console.log('find cache', `${target}-${variant}.tar.gz`, cachedPath)
+      cachedPath = tc.find("mcm", `${target}-${escapedVariant}.tar.gz`);
+      console.log('find cache', `${target}-${escapedVariant}.tar.gz`, cachedPath)
     }
     if (cachedPath) {
       console.log(`Found installation at ${cachedPath}`);
     } else {
       const toolchainPath = await tc.downloadTool(url);
       const toolchainExtractedFolder = await tc.extractTar(toolchainPath);
-      cachedPath = await tc.cacheDir(toolchainExtractedFolder, "mcm", `${target}-${variant}.tar.gz`);
+      cachedPath = await tc.cacheDir(toolchainExtractedFolder, "mcm", `${target}-${escapedVariant}.tar.gz`);
       console.log(`Installed at ${cachedPath}`);
     }
     cachedPath = path.join(cachedPath, "output", "bin");
