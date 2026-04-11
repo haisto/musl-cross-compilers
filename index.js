@@ -26,7 +26,7 @@ if (!tempDirectory) {
     tempDirectory = path.join(baseLocation, 'actions', 'temp');
 }
 
-export async function getMuslToolchain(version) {
+async function getMuslToolchain(version) {
     let toolPath = tc.find('maven', version);
 
     if (!toolPath) {
