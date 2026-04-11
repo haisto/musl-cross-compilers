@@ -12,6 +12,7 @@ const target = core.getInput("target", {required: true});
 const version = core.getInput("version", {required: true});
 const variant = core.getInput("variant", {required: true});
 const escapedVariant = variant.replace("/", "_");
+const cacheVersion = `${version}-${target}-${escapedVariant}`;
 
 if (!tempDirectory) {
     let baseLocation;
@@ -60,7 +61,7 @@ async function getMuslToolchain(version) {
 
 async function run() {
     console.log(`Installing musl-cross-make for ${target}...`);
-    await getMuslToolchain(version);
+    await getMuslToolchain(cacheVersion);
 }
 
 run();
