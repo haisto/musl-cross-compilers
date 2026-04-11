@@ -27,34 +27,41 @@ if (!tempDirectory) {
     tempDirectory = path.join(baseLocation, 'actions', 'temp');
 }
 
-// async function getMuslToolchain(version) {
-//     let toolPath = tc.find(toolchainName, version);
-//
-//     if (!toolPath) {
-//         toolPath = await downloadMaven(version);
-//     }
-//
-//     toolPath = path.join(toolPath, "output", "bin");
-//     console.log(toolPath)
-//     core.addPath(toolPath);
-// }
-//
-//
-// async function downloadMaven(version) {
-//     const toolDirectoryName = `${toolchainName}-${version}`;
-//     const downloadUrl = `https://github.com/haisto/musl-cross-compilers/releases/download/${version}/output-${target}-${escapedVariant}.tar.gz`;
-//     console.log(`downloading ${downloadUrl}`);
-//
-//     try {
-//         const downloadPath = await tc.downloadTool(downloadUrl);
-//         const extractedPath = await tc.extractTar(downloadPath);
-//         let toolRoot = path.join(extractedPath, toolDirectoryName);
-//         return await tc.cacheDir(toolRoot, toolchainName, version);
-//     } catch (err) {
-//         throw err;
-//     }
-// }
+async function downloadMaven(version) {
+    const toolDirectoryName = `${toolchainName}-${version}`;
+    const downloadUrl = `https://github.com/haisto/musl-cross-compilers/releases/download/${version}/output-${target}-${escapedVariant}.tar.gz`;
+    console.log(`downloading ${downloadUrl}`);
 
+    try {
+        const downloadPath = await tc.downloadTool(downloadUrl);
+        const extractedPath = await tc.extractTar(downloadPath);
+        let toolRoot = path.join(extractedPath, toolDirectoryName);
+        return await tc.cacheDir(toolRoot, toolchainName, version);
+    } catch (err) {
+        throw err;
+    }
+}
+
+async function getMuslToolchain(version) {
+    let toolPath = tc.find(toolchainName, version);
+
+    if (!toolPath) {
+        toolPath = await downloadMaven(version);
+    }
+
+    toolPath = path.join(toolPath, "output", "bin");
+    console.log(toolPath)
+    core.addPath(toolPath);
+}
+
+
+
+async function run() {
+    console.log(`Installing musl-cross-make for ${target}...`);
+    await getMuslToolchain(version);
+}
+
+run();
 // (async () => {
 //     try {
 //         if (!version) {
@@ -64,9 +71,3 @@ if (!tempDirectory) {
 //         core.setFailed(error);
 //     }
 // })();
-
-async function run() {
-    console.log(`Installing musl-cross-make for ${target}...`);
-}
-
-run();
