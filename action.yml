@@ -4,6 +4,10 @@ inputs:
   target:
     description: 'Target triple'
     required: true
+  version:
+      description: 'The version of musl-cross-make to download'
+      required: true
+      default: 'v0.0.1'
   variant:
     description: 'The variant (source repository) you wish to download'
     required: true
