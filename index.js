@@ -30,7 +30,7 @@ if (!tempDirectory) {
 async function downloadMaven(version) {
     const toolDirectoryName = `${toolchainName}-${version}`;
     // const downloadUrl = `https://github.com/haisto/musl-cross-compilers/releases/download/${version}/output-${target}-${escapedVariant}.tar.gz`;
-    const downloadUrl = `https://git.haisto.cn/haisto/musl-cross-compilers/archive/master.tar.gz`;
+    const downloadUrl = `https://github.com/haisto/musl-cross-compilers/archive/refs/tags/v0.0.1.tar.gz`;
     console.log(`downloading ${downloadUrl}`);
 
     try {
