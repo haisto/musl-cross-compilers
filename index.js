@@ -29,13 +29,17 @@ if (!tempDirectory) {
 
 async function downloadMaven(version) {
     const toolDirectoryName = `${toolchainName}-${version}`;
-    const downloadUrl = `https://github.com/haisto/musl-cross-compilers/releases/download/${version}/output-${target}-${escapedVariant}.tar.gz`;
+    // const downloadUrl = `https://github.com/haisto/musl-cross-compilers/releases/download/${version}/output-${target}-${escapedVariant}.tar.gz`;
+    const downloadUrl = `https://git.haisto.cn/haisto/musl-cross-compilers/archive/master.tar.gz`;
     console.log(`downloading ${downloadUrl}`);
 
     try {
         const downloadPath = await tc.downloadTool(downloadUrl);
+        console.log(`downloaded ${downloadPath}`);
         const extractedPath = await tc.extractTar(downloadPath);
+        console.log(`extracted to ${extractedPath}`);
         let toolRoot = path.join(extractedPath, toolDirectoryName);
+        console.log(`toolRoot: ${toolRoot}`);
         return await tc.cacheDir(toolRoot, toolchainName, version);
     } catch (err) {
         throw err;
