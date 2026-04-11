@@ -38,9 +38,7 @@ async function downloadMaven(version) {
         console.log(`downloaded ${downloadPath}`);
         const extractedPath = await tc.extractTar(downloadPath);
         console.log(`extracted to ${extractedPath}`);
-        let toolRoot = path.join(extractedPath, toolDirectoryName);
-        console.log(`toolRoot: ${toolRoot}`);
-        return await tc.cacheDir(toolRoot, toolchainName, version);
+        return await tc.cacheDir(extractedPath, toolchainName, version);
     } catch (err) {
         throw err;
     }
