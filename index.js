@@ -46,6 +46,7 @@ async function downloadMaven(version) {
 }
 
 async function getMuslToolchain(version) {
+    console.log(`Looking for ${toolchainName} ${version} in cache...`);
     let toolPath = tc.find(toolchainName, version);
 
     if (!toolPath) {
@@ -61,7 +62,7 @@ async function getMuslToolchain(version) {
 
 async function run() {
     console.log(`Installing musl-cross-make for ${target}...`);
-    await getMuslToolchain(cacheVersion);
+    await getMuslToolchain(version);
 }
 
 run();
