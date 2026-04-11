@@ -70,7 +70,7 @@ const buildDir = path.join("/opt/", target, variant);
         if (cachedPath) {
             console.log(`Found installation at ${cachedPath}`);
         } else {
-            const toolchainPath = await tc.downloadTool(url);
+            const toolchainPath = await tc.downloadTool(downloadUrl);
             const toolchainExtractedFolder = await tc.extractTar(toolchainPath);
             cachedPath = await tc.cacheDir(toolchainExtractedFolder, toolchainPath, versionSpec);
             console.log(`Installed at ${cachedPath}`);
