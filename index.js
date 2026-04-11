@@ -35,6 +35,7 @@ async function getMuslToolchain(version) {
     }
 
     toolPath = path.join(toolPath, "output", "bin");
+    console.log(toolPath)
     core.addPath(toolPath);
 }
 
