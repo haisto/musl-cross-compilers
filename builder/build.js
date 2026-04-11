@@ -81,9 +81,11 @@ const data = {
         {
             name: "Build ${{ matrix.target }} zlib",
             run: [
+                "export CROSS_COMPILE_DIR=$(pwd)/output",
+                "export PATH=$CROSS_COMPILE_DIR/bin:$PATH",
                 "git clone --branch master --single-branch https://github.com/madler/zlib.git",
                 "cd zlib",
-                "./configure --prefix=../output --static",
+                "CC=$TARGET-gcc ./configure --prefix=$CROSS_COMPILE_DIR/$TARGET --static",
                 "make install",
                 "cd ..",
                 "ls output/lib"
